@@ -1,4 +1,4 @@
-#include "udp_packet.h"
+#include "udp.h"
 
 int main(int argc, char *argv[]){
     
@@ -47,15 +47,15 @@ int main(int argc, char *argv[]){
     std::cout << "> Port : "  << argv[1] << std::endl;
     std::cout << "-----------------------" << std::endl;
     
-    udp_package *data_s = new udp_package;
-    udp_package *data_r = new udp_package;
+    UdpPackage *data_s = new UdpPackage;
+    UdpPackage *data_r = new UdpPackage;
     
     seq_locale = 0;
     seq_distant = 0;
 
     //Boucle principale : ecoute 
     client_length = sizeof(client);
-    int size = sizeof(struct udp_package);
+    int size = sizeof(struct UdpPackage);
     while(1){
         bzero(data_r , size);
         bzero(data_s , size);
@@ -67,19 +67,19 @@ int main(int argc, char *argv[]){
         //Si on recoi rien message d'erreur
         if(n < 0){
             std::cerr<< "Erreur : Pas de récepetion !" << std::endl;
-        }else{
+        }//else{
             //Reception paquet
             //Quand je recois un paquet maj de seq_distant
-            ++seq_distant;
+            /*++seq_distant;
             if(data_r->id < seq_distant){
                 seq_distant = data_r->id;
-            }
+            }*/
             
             //std::cout << "size : " << n << std::endl;
             //std::cout << "Datagramme recu : " << data_r->msg << std::endl;
           //  std::cout << "id : " << data_r->id << std::endl;
         //    std::cout << "len : " << data_r->len << std::endl;
-        }
+        //}
         
         std::cout << "---------------------" << std::endl;
         std::cout << "||||| Reception |||||" << std::endl;
@@ -104,6 +104,8 @@ int main(int argc, char *argv[]){
         
         std::cout << "Datagramme recu de : " << hostclient->h_name << ", " << hostaddr << std::endl;
         
+        //wait(10);
+        
         strcpy(data_s->msg, "acquittement");
         data_s->len = size;
         
@@ -116,11 +118,11 @@ int main(int argc, char *argv[]){
         
         if(n < 0){
             std::cerr << "Erreur: sendto !" << std::endl;
-        }else{
+        }//else{
             //std::cout << "Accusé de reception !" << std::endl;
             //Apres chaque envoi on incrémente seq_locale
-            ++seq_locale; 
-        }
+          //  ++seq_locale; 
+        //}
         
         std::cout << "-----------------" << std::endl;
         std::cout << "||||| Envoi |||||" << std::endl;

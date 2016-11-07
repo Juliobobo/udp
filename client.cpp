@@ -1,4 +1,4 @@
-#include "udp_packet.h"
+#include "udp.h"
 
 int main(int argc, char *argv[]) {
     
@@ -54,11 +54,11 @@ int main(int argc, char *argv[]) {
     std::cout << "-----------------------" << std::endl;
 
 
-    udp_package *data_s = new udp_package;
-    udp_package *data_r = new udp_package;
+    UdpPackage *data_s = new UdpPackage;
+    UdpPackage *data_r = new UdpPackage;
     
     server_length = sizeof(serveraddr);
-    int size = sizeof(struct udp_package);
+    int size = sizeof(struct UdpPackage);
     
     int i = 0;
     seq_locale = 0;
@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
             bzero(data_r, size);
         
         // boucle simulant les 10envoi/s       
-        while(++i < 101){     
+        while(++i < 31){     
             strcpy(data_s->msg, "loop");  
             data_s->len = size;
             
@@ -103,8 +103,10 @@ int main(int argc, char *argv[]) {
             std::cout << "> id : "  << data_s->id << std::endl;
             std::cout << "> ac_reception : "  << data_s->ac_reception << std::endl;
             std::cout << "> i : "  << i << std::endl;
-               
+            
         }
+        
+        wait(1);
     
         /* Reponse du server */
         n = recvfrom(sock, data_r, size, 0, (struct sockaddr *)&serveraddr, (socklen_t*)&server_length);
